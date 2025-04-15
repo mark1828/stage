@@ -1,0 +1,482 @@
+
+Stage Project Verslag
+
+Traject Parket AI Camera
+
+
+
+
+Versiebeheer
+VersieDatumOmschrijving1.004-01-2025Eerste definitieve versie.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Handtekeningen
+De volgende betrokkenen geven hun akkoord voor dit document middels hun onderstaande handtekening.
+
+
+
+
+
+
+
+
+
+
+
+Hogeschool Utrecht	Traject Parket.
+Mark Luiken	Martijn Dijkstra
+Amersfoort, datum: 12-01-2025:	Doetichem datum: 12-01-2025
+
+
+
+Management samenvatting
+Dit document beschrijft het project waarbij een prototype is ontwikkeld voor een geautomatiseerd sorteersysteem voor houten planken. Het doel van het project is om de efficiëntie en consistentie in het sorteerproces te verbeteren door middel van moderne technologieën zoals machine learning en beeldherkenning.
+
+
+
+Inhoudsopgave
+
+1	Inleiding	6
+1.1	Leeswijzer	6
+2	Analyse	7
+2.1	Organisatiebeschrijving	7
+2.2	Bestaande situatie	7
+2.3	Gewenste situatie	8
+2.4	Opdrachtsomschrijving	8
+2.5	Randvoorwaarden	8
+2.6	Afbakening	8
+3	Onderzoek	9
+3.1	Onderzoeksvragen	9
+3.2	Benodigde informatie en achtergrond	10
+3.3	Conclusie van het onderzoek	10
+3.4	Vervolg advies n.a.v. het onderzoek	11
+4	Ontwerp	12
+4.1	Beschrijving van het ontwerp	12
+4.2	Technische en functionele passendheid	13
+4.3	Kostenoverzicht	13
+5	Realisatie	14
+5.1	Testplan en resultaten	14
+5.2	Bereikte doelen	15
+5.3	Aanvullende acties	15
+6	Beheer	16
+6.1	Gebruikershandleiding	16
+6.2	Training en ondersteuning	16
+6.3	Beheersorganisatie	17
+6.4	Risico’s en acties	17
+7	Conclusie en advies	18
+7.1	Conclusie	18
+7.2	Advies	18
+8	Zelfreflectie	20
+8.1	Leerproces	20
+8.2	Kritische en proactieve houding	20
+8.3	Samenwerken, nemen van eigen verantwoordelijkheid en afspraken nakomen	20
+8.4	Communiceren met verschillende partijen (intern/extern)	21
+Bibliografie	22
+
+1 Inleiding
+Dit document beschrijft een project waarin de focus ligt op het ontwikkelen van een geautomatiseerd sorteersysteem voor houten planken. Het doel van dit systeem is om de efficiëntie en consistentie van het sorteren te verhogen, met behulp van moderne technologieën zoals machine learning en beeldherkenning.
+
+Het project speelt zich af bij een bedrijf dat gespecialiseerd is in de productie van Traject Parket. De huidige productielijn omvat een voorschaafmachine waar planken handmatig worden gesorteerd op sortering. Deze aanpak is tijdrovend en vatbaar voor menselijke fouten. Om deze uitdagingen aan te pakken, is een prototype ontwikkeld dat planken automatisch detecteert, data verzamelt en voorbereidt voor verdere verwerking.
+
+In dit document wordt het volledige proces van analyse, ontwerp en realisatie beschreven. Het geeft inzicht in de technische keuzes, de testresultaten en de plannen voor verdere ontwikkeling. Het document biedt niet alleen een overzicht van het project, maar dient ook als basis voor toekomstige optimalisaties.
+
+1.1 Leeswijzer
+Dit document is opgedeeld in de volgende hoofdstukken:
+
+* Hoofdstuk 2 - Analyse
+Hier wordt de bestaande situatie beschreven, evenals de gewenste situatie. Het hoofdstuk behandelt ook de context van het project en de randvoorwaarden die van toepassing zijn.
+
+* Hoofdstuk 3 - Onderzoek
+In dit hoofdstuk worden de onderzoeksvragen geformuleerd en beantwoord. Het bevat informatie over de benodigde achtergrondkennis en geeft een conclusie en advies gebaseerd op het uitgevoerde onderzoek.
+
+* Hoofdstuk 4 - Ontwerp
+Dit hoofdstuk gaat in op het technische ontwerp van het systeem, met een beschrijving van de gekozen hardware en software, en waarom deze keuzes passend zijn.
+
+* Hoofdstuk 5 - Realisatie
+Hier wordt het proces van implementatie en testen besproken. Dit omvat de stappen die zijn gezet om het ontwerp te realiseren, inclusief testresultaten en eventuele uitdagingen.
+
+* Hoofdstuk 6 - Beheer
+Dit hoofdstuk bespreekt hoe het systeem wordt onderhouden en overgedragen, met aandacht voor een onderhoudsplan en gebruikershandleiding.
+
+* Hoofdstuk 7 - Conclusie en Advies
+In dit hoofdstuk wordt een samenvatting gegeven van het project en worden concrete aanbevelingen gedaan voor verdere ontwikkelingen.
+
+* Hoofdstuk 8 - Zelfreflectie
+Dit laatste hoofdstuk bevat een persoonlijke reflectie op het leerproces en de samenwerking tijdens het project.
+
+2 Analyse
+2.1 Organisatiebeschrijving
+Traject Parket is een bedrijf gespecialiseerd in de productie van hoogwaardige houten vloeren. Het bedrijf heeft een productielijn waar verschillende houtbewerkingsmachines worden gebruikt, waaronder een voorschaafmachine. De stageopdracht richtte zich op het automatiseren van het sorteerproces van houten planken, met een focus op het gebruik van machine learning en beeldherkenningstechnologie.
+2.2 Bestaande situatie
+Op dit moment staat er een werkend prototype dat bestaat uit een Raspberry Pi 5 en een camera. Deze hardware is gemonteerd in een speciaal ontworpen box die is afgedekt en voorzien van LED-verlichting. Dit zorgt voor een constante belichting en maakt het mogelijk om duidelijke en consistente foto’s van planken te maken. Binnenin de box, zoals in figuur 1 te zien is, zijn alle onderdelen netjes georganiseerd om optimale prestaties te garanderen.
+Het systeem is geplaatst bij de voorschaafmachine en kan planken detecteren en herkennen wanneer een nieuwe plank in beeld komt. Zodra een plank wordt gedetecteerd, maakt de camera foto’s die automatisch op een server worden opgeslagen. Dit is een belangrijke stap om data te verzamelen die in de toekomst gebruikt kan worden voor machine learning-modellen.
+De huidige opstelling bevat een box waarin de camera en Raspberry Pi zijn geplaatst. Zoals te zien op de foto (figuur 2), is deze box stevig gebouwd en volledig afgesloten om externe invloeden zoals stof en lichtvariaties te minimaliseren. De planken worden vanuit de voorschaafmachine door de box geleid, waar de ingebouwde LED-verlichting zorgt voor een constante en gelijkmatige belichting. Dit voorkomt schaduwen en reflecties en garandeert dat de camera consistente, hoogwaardige beelden kan vastleggen.
+De box speelt een cruciale rol in het systeem door de omgeving te controleren en de kwaliteit van de dataverzameling te verbeteren. Het ontwerp is eenvoudig en functioneel, en biedt voldoende ruimte om de hardware te beschermen tegen omgevingsfactoren, zoals stof en trillingen.
+
+
+2.3 Gewenste situatie
+De gewenste situatie omvat een volledig geautomatiseerd sorteersysteem dat:
+
+* De planken detecteert en categoriseert op basis van kwaliteit.
+* Automatisch sorteringen toepast met behulp van machine learning-modellen.
+* Beschikt over gedetailleerde technische ontwerpen, zoals SolidWorks-tekeningen, om toekomstige implementaties te ondersteunen.
+
+De huidige opzet biedt een solide basis, maar verdere ontwikkeling is nodig om de gewenste situatie te bereiken.
+2.4 Opdrachtsomschrijving
+De opdracht richtte zich op het ontwikkelen van een prototype voor een geautomatiseerd sorteersysteem dat het huidige handmatige sorteerproces bij Traject Parket kan vervangen. Het doel was om een systeem te maken dat planken detecteert, foto’s maakt, en deze gegevens opslaat voor verdere analyse en verwerking. Dit prototype zou dienen als basis voor het verzamelen van data en het trainen van machine learning-modellen die in de toekomst kunnen worden gebruikt voor automatische kwaliteitscontrole.
+
+Om dit te realiseren, was het de taak om een camera en een Raspberry Pi 5 te integreren in een werkende opstelling bij de voorschaafmachine. Daarnaast moest er een functionele omschrijving en een FMEA komen om het systeem en mogelijke risico’s in kaart te brengen. Het project had ook als doel om data te verzamelen die later kan worden gebruikt om het systeem verder te ontwikkelen en optimaliseren. De nadruk lag op het creëren van een solide basis die in toekomstige iteraties kan worden uitgebreid naar een volledig geautomatiseerd sorteersysteem.
+2.5 Randvoorwaarden
+De volgende randvoorwaarden waren essentieel voor het succes van dit project:
+* Beschikbaarheid van een camera en een Raspberry Pi 5.
+* Toegang tot de voorschaafmachine voor installatie.
+* Voldoende opslagruimte op een server voor het opslaan van beelden.
+* Documentatie en analyses, zoals een FMEA en functionele omschrijving, om het project te ondersteunen.
+* Ondersteuning van collega’s die verstand hebben van de situatie
+
+2.6 Afbakening
+Dit project richtte zich op het ontwikkelen van een functioneel prototype en het verzamelen van data. De implementatie van een volledig geautomatiseerd sorteersysteem en het ontwerpen van SolidWorks-tekeningen vallen nu buiten de scope van deze opdracht.
+3 Onderzoek
+3.1 Onderzoeksvragen
+Om een volledig geautomatiseerd sorteersysteem te ontwikkelen dat planken detecteert, categoriseert en sorteert, is het belangrijk om enkele onderzoeksvragen te beantwoorden. Deze onderzoeksvragen vormen de basis voor het ontwerp en de implementatie van het systeem. De onderzoek vragen waren al gesteld in het plan van aanpak. In dit hoofdstuk worden deze vragen beantwoord. Er wordt hier specifiek gekeken naar de onderzoekvragen van de machine learning kant.
+
+Hoofdvraag: Hoe kan een machine learning-model worden ontwikkeld en geïmplementeerd om visuele kenmerken van hout, zoals kleur en het aantal noesten, nauwkeurig te herkennen en te classificeren?
+
+Deelvragen en antwoorden:
+1. Welke kenmerken van het hout moeten herkend worden door het machine learning-model? Het model moet visuele eigenschappen van hout herkennen die relevant zijn voor het sorteerproces, zoals kleurvariaties, noesten, en oppervlaktetexturen. Deze kenmerken bepalen de kwaliteit en categorie van de plank, zoals Premier, Natuur, of Rustiek. Voor een nauwkeurige herkenning is het belangrijk om deze kenmerken in een dataset te labelen.
+
+2. Welke machine learning-technieken zijn geschikt voor dit soort beeldherkenning? Convolutional Neural Networks (CNNs) zijn geschikt voor beeldherkenningstaken, omdat ze goed presteren bij het identificeren van visuele patronen.
+
+
+3. Hoe kan het machine learning-model worden getraind met voldoende nauwkeurigheid? Het model kan worden getraind met een dataset van afbeeldingen van planken, waarbij elke afbeelding correct is gelabeld met de relevante categorie.
+
+4. Hoe wordt de camera optimaal ingesteld voor het vastleggen van beeldmateriaal? De camera moet worden ingesteld op een resolutie van minstens 1080p om fijne details zoals kleine noesten duidelijk vast te leggen. Belichting moet consistent zijn om schaduwen en reflecties te minimaliseren. De camera moet worden gepositioneerd boven de plank, met een vaste afstand en hoek voor uniformiteit in de afbeeldingen.
+
+
+5. Hoe wordt het machine learning-model geïntegreerd met de camera en andere hardware? De Raspberry Pi 5 kan worden gebruikt om de camera-output in real-time te verwerken en door te sturen naar het machine learning-model. Software zoals OpenCV kan de beelden verwerken en als input voor het model gebruiken. Een Flask- of FastAPI-server kan worden opgezet om de communicatie tussen de hardware en het model te beheren.
+
+6. Welke prestatie-indicatoren worden gebruikt om de nauwkeurigheid van het model te evalueren? De prestaties van het model kunnen worden gemeten aan de hand van nauwkeurigheid, precisie, recall, en F1-score. Een nauwkeurigheid van minimaal 90% wordt als acceptabel beschouwd voor praktische toepassing.
+
+7. Hoe kan het model na implementatie geoptimaliseerd worden? Optimalisatie kan worden bereikt door het model te trainen met nieuwe datasets die meer variatie bevatten, zoals planken met verschillende defecten of kleurpatronen. Regelmatige hertraining met nieuwe data is essentieel om het model up-to-date te houden.
+
+
+8. Is de Raspberry Pi 5 geschikt om het machine learning-model en de beeldverwerking uit te voeren? De Raspberry Pi 5, met een aangesloten SSD en optionele GPU, kan eenvoudige machine learning-taken uitvoeren, zoals inferentie met een getraind model. Voor zwaardere trainingstaken is echter krachtigere hardware nodig. De Raspberry Pi is geschikt voor prototyping en het verzamelen van data, maar mogelijk minder efficiënt voor geavanceerde beeldverwerkingsmodellen.
+3.2 Benodigde informatie en achtergrond
+Het doel van dit project was om een werkend prototype te ontwikkelen dat houten planken kan detecteren, data kan verzamelen, en deze data kan gebruiken om een machine learning-model te trainen.
+
+Werking van het systeem
+Het systeem is opgebouwd rondom een Raspberry Pi 5 met een aangesloten camera module (Raspberry Pi Camera Module 3). Deze camera heeft een resolutie van 12 megapixels en ondersteunt HDR, wat essentieel is voor het vastleggen van gedetailleerde beelden van de planken. De camera is gemonteerd in een afgedekte box met LED-verlichting om consistente belichting te garanderen. Dit voorkomt schaduwen en zorgt ervoor dat de kleur en textuur van de planken nauwkeurig worden vastgelegd.
+
+De bewegingsdetectie wordt uitgevoerd met behulp van OpenCV. Hierbij wordt een solide mask en een edge mask gebruikt om onderscheid te maken tussen de plank en de achtergrond. Het systeem maakt gebruik van drempelwaarden om te bepalen wanneer een plank volledig in beeld is, voordat er foto's worden gemaakt. Deze beelden worden vervolgens opgeslagen op een server via een eenvoudige communicatielaag die draait op de Raspberry Pi.
+
+Belichting
+Bij het vastleggen van de beelden spelen lichtintensiteit en reflectie een belangrijke rol. Het gebruik van LED-verlichting minimaliseert variaties in lichtomstandigheden, wat cruciaal is voor een consistente datakwaliteit. Verder is de scherptediepte van de camera-afstelling belangrijk, omdat dit bepaalt hoe gedetailleerd de noesten en texturen van de planken zichtbaar zijn in de foto's.
+
+Theoretische achtergrond
+Het prototype is ontworpen met als doel het verzamelen van data om een machine learning-model te trainen. Hiervoor wordt voornamelijk gekeken naar technieken zoals convolutional neural networks (CNN’s), die goed presteren bij beeldherkenningstaken. Het systeem richt zich op het verzamelen van voldoende beelden om een model te trainen dat visuele kenmerken zoals kleurvariatie, noesten en defecten kan classificeren.
+
+3.3 Conclusie van het onderzoek
+Het onderzoek heeft aangetoond dat het huidige prototype een solide basis vormt voor verdere ontwikkeling. De installatie van de Raspberry Pi 5 en camera in een afgedekte box bij de voorschaafmachine werkt effectief voor het verzamelen van hoogwaardige beelden. Het systeem kan planken detecteren en onderscheid maken tussen nieuwe en reeds gedetecteerde planken. Deze beelden zijn van voldoende kwaliteit om te worden gebruikt als dataset voor de training van machine learning-modellen.
+
+De meest passende oplossing is om verder te bouwen op het huidige systeem door:
+
+1. Het uitbreiden van de dataset met meer gevarieerde beelden.
+2. Het trainen van een convolutional neural network (CNN) voor het herkennen en classificeren van visuele kenmerken.
+3. Het optimaliseren van de hardware-instellingen, zoals camera-afstelling en belichting, om de nauwkeurigheid van het systeem verder te verbeteren.
+
+Hoewel het systeem nog niet volledig geautomatiseerd is, heeft het onderzoek bevestigd dat de gekozen aanpak realistisch en schaalbaar is voor verdere ontwikkeling.
+
+
+
+
+
+
+
+3.4 Vervolg advies n.a.v. het onderzoek
+Op basis van het onderzoek wordt het volgende geadviseerd:
+1. Data-uitbreiding: Verzamel meer beelden van planken met verschillende soorten hout en defecten. Zorg ervoor dat de dataset goed is gelabeld om de nauwkeurigheid van het machine learning-model te waarborgen.
+
+2. Modelontwikkeling: Begin met het ontwikkelen van een convolutional neural network (CNN) en train dit model met de verzamelde data. Test verschillende hyperparameters en netwerkarchitecturen om de beste prestaties te bereiken.
+
+
+3. Integratie en automatisering: Ontwikkel een mechanisch sorteersysteem dat gekoppeld kan worden aan de output van het machine learning-model. Dit systeem moet de planken fysiek sorteren op basis van de classificatie.
+
+Met deze stappen kan het systeem verder worden ontwikkeld tot een volledig geautomatiseerd sorteersysteem dat zowel efficiënter als consistenter werkt dan de huidige handmatige processen.
+
+4 Ontwerp
+Het ontwerp van het systeem richt zich op het ontwikkelen van een prototype dat houten planken detecteert, analyseert en voorbereidt voor toekomstige automatisering. Dit ontwerp combineert hardware, software en een gestructureerd proces, en biedt een solide basis voor verdere ontwikkeling en implementatie. Voor dit hoofdstuk zal ik veel referenties gebruiken uit het functionele ontwerp.
+4.1 Beschrijving van het ontwerp
+Het systeem bestaat uit drie hoofdcomponenten: de hardwareopstelling, de softwarearchitectuur en de communicatielaag met de server. Elk onderdeel is ontworpen om de eisen en doelen van het project te ondersteunen.
+
+Hardwareopstelling
+De hardware bestaat uit een Raspberry Pi 5 en een Raspberry Pi Camera Module 3, gemonteerd in een afgedekte box (zie figuur 3). De box bevat LED-verlichting voor constante belichting en is stevig ontworpen om de hardware te beschermen en beweging of vervuiling te voorkomen.
+
+* Camera: De camera, uitgerust met een 6mm lens, biedt een resolutie van 12 megapixels en ondersteunt HDR (High Dynamic Range). Dit zorgt voor scherpe beelden en maakt het mogelijk om fijne details zoals noesten en kleurvariaties te detecteren (Functioneel omschrijving, 2024, p. 6).
+
+* Behuizing: De box minimaliseert invloeden van omgevingslicht en zorgt voor consistente beeldkwaliteit. Dit is belangrijk om de nauwkeurigheid van de dataverzameling te waarborgen (Functioneel omschrijving, 2024, p. 7).
+
+* LED-verlichting: Deze zorgt voor een gelijkmatige belichting, waardoor schaduwen en reflecties worden geminimaliseerd (Functioneel omschrijving, 2024, p. 7).
+
+
+
+Figuur 3: Binnenkant ontwerp
+Softwarearchitectuur
+De software is gebouwd rond een Flask-server die communicatie, beeldverwerking en opslag beheert. OpenCV wordt gebruikt voor beeldanalyse en detectie:
+
+* Bewegingsdetectie: Het systeem detecteert planken met behulp van solide masks en edge masks. Parameters zoals THRESHOLD en MOVEMENT_THRESHOLD zijn geoptimaliseerd om vals-positieve detecties te voorkomen (Functioneel omschrijving, 2024, p. 12).
+
+* Opslag en verzending: Foto’s worden opgeslagen in batches en gecomprimeerd in zip-bestanden voordat ze naar de server worden verzonden (Functioneel omschrijving, 2024, p. 15).
+
+* Configuratiebestand: Het systeem is flexibel door aanpasbare parameters zoals resolutie, belichting en detectiedrempels in het configuratiebestand (Functioneel omschrijving, 2024, p. 10).
+
+Communicatie en data-uitwisseling
+De Raspberry Pi communiceert met een server via een dynamisch of statisch IP-adres. De server ontvangt de zip-bestanden en biedt een platform voor verdere verwerking en analyse (Functioneel omschrijving, 2024, p. 7).
+4.2 Technische en functionele passendheid
+Het ontwerp is technisch en functioneel passend omdat het:
+1. Consistente dataverzameling mogelijk maakt, essentieel voor de ontwikkeling van een machine learning-model.
+
+2. Flexibiliteit biedt door aanpasbare configuratie-opties voor verschillende omgevingen en eisen.
+
+3. Schaalbaarheid ondersteunt, waardoor het systeem eenvoudig kan worden uitgebreid of aangepast naarmate de vereisten veranderen.
+
+Het systeem voldoet grotendeels aan de eisen en wensen van de klant, zoals beschreven in de functionele omschrijving (Functioneel omschrijving, 2024, p. 22). Een afwijking is dat de fysieke sorteermachine nog niet is ontworpen, maar dit was niet opgenomen in de scope van de huidige fase.
+4.3 Kostenoverzicht
+De kosten voor de huidige opstelling zijn beperkt tot de hardware (Raspberry Pi, camera en LED-verlichting) en de tijd voor softwareontwikkeling. Een verdere opsomming kan als volgt worden weergegeven:
+
+* Raspberry Pi 5 Set: €110
+* Camera Module 3: €35
+* 6mm lens: €25
+* LED-verlichting: €12.50
+* Overige onderdelen (box, bekabeling): €30
+
+De totale kosten bedragen ongeveer €212.50 (exclusief ontwikkeltijd).
+5 Realisatie
+Om het ontwerp te realiseren, is een werkend prototype ontwikkeld dat in staat is om planken te detecteren en te fotograferen. De hardwareopstelling, bestaande uit een Raspberry Pi 5 en een Camera Module 3, is met succes geïntegreerd en geïnstalleerd bij de voorschaafmachine. De softwarearchitectuur, inclusief bewegingsdetectie en opslagfunctionaliteit, is volledig geïmplementeerd en getest.
+
+Configuratie en testing
+In de functionele omschrijving is uitgebreid beschreven hoe het detectieproces is geoptimaliseerd door middel van testen en fine-tuning (Functioneel omschrijving, 2024, p. 12). Specifieke parameters zoals THRESHOLD, MOVEMENT_THRESHOLD, en BACKGROUND_UPDATE_SPEED zijn aangepast om de betrouwbaarheid van het solide mask te verbeteren. Dit minimaliseert vals-positieve detecties en zorgt ervoor dat de planken correct worden herkend. Bij het randen mask is gebruikgemaakt van Canny Edge Detection, waarbij de lage en hoge drempelwaarden zorgvuldig zijn ingesteld om ruis te verminderen en relevante details van de planken vast te leggen (Functioneel omschrijving, 2024, p. 14).
+
+Fine-tuning van het randen mask
+Het fine-tunen van het randen mask was cruciaal voor het realiseren van een nauwkeurige beeldverwerking. Door het aanpassen van de CANNY_LOW_THRESHOLD en CANNY_HIGH_THRESHOLD zijn zwakke randen beter zichtbaar gemaakt zonder dat er te veel ruis werd toegevoegd. Dit verbeterde de detectie van noesten en randafwerkingen van de planken (Functioneel omschrijving, 2024, p. 14). Het configuratiebestand maakte het mogelijk om deze instellingen eenvoudig te wijzigen zonder de hoofdcode aan te passen.
+
+5.1 Testplan en resultaten
+Testplan
+De volgende stappen zijn uitgevoerd om de prestaties van het systeem te evalueren:
+
+1. Beeldkwaliteit: Testen van de camera-instellingen onder verschillende lichtomstandigheden.
+2. Detectiebetrouwbaarheid: Evaluatie van het solide en randen mask met planken van verschillende formaten en kwaliteiten.
+3. Opslag en verzending: Controle van de data-overdracht naar de server, inclusief het genereren van zip-bestanden.
+
+Resultaten
+De tests hebben aangetoond dat het systeem in staat is om consistente beelden van hoge kwaliteit te leveren. Het solide mask functioneert correct door vals-positieve detecties te vermijden bij afwezigheid van beweging (Functioneel omschrijving, 2024, p. 12). De plankdetectie is verbeterd door het toevoegen van een debounce-timer, wat ervoor zorgt dat het systeem niet onnodig reageert op kleine verstoringen (Functioneel omschrijving, 2024, p. 15).
+
+Wat goed ging:
+* De configuraties van het solide en randen mask leverden betrouwbare resultaten op bij verschillende licht- en omgevingsomstandigheden.
+* De opslag- en verzendfunctionaliteit werkte zoals bedoeld, met foutloze communicatie met de server.
+
+Wat beter kan:
+* Bij enkele tests waren de achtergrondmodellen niet optimaal, wat leidde tot minder nauwkeurige detectie in dynamische lichtomstandigheden. Dit kan worden verbeterd door automatische achtergrondupdates te implementeren (Functioneel omschrijving, 2024, p. 14).
+
+
+
+
+
+5.2 Bereikte doelen
+Het belangrijkste doel, het ontwikkelen van een werkend prototype voor plankdetectie en dataverzameling, is bereikt. De installatie van de hardware en software is succesvol afgerond, en het systeem functioneert betrouwbaar onder realistische omstandigheden. Echter, het systeem is nog niet volledig geautomatiseerd en verdere stappen zijn nodig om de gewenste situatie volledig te realiseren.
+
+5.3 Aanvullende acties
+Om het systeem verder te ontwikkelen, worden de volgende acties aanbevolen:
+
+1. Data-uitbreiding: Verzamel meer beelden van verschillende plankkwaliteiten en gebruik deze data om een machine learning-model te trainen.
+
+2. Systeemoptimalisatie: Implementeer dynamische achtergrondupdates en verbeter de fysieke stabiliteit van de hardware.
+
+
+3. Integratie in de productielijn: Ontwikkel een mechanisch sorteersysteem dat de output van het machine learning-model kan gebruiken om planken fysiek te sorteren.
+6 Beheer
+Het onderhoud van het systeem is essentieel om de prestaties en betrouwbaarheid op lange termijn te garanderen. Op basis van de risico’s geïdentificeerd in de FMEA zijn de volgende onderhoudsacties opgesteld:
+
+1. Visuele inspectie en logbestanden controleren
+Regelmatige inspecties van de camera en de Raspberry Pi zijn nodig om ervoor te zorgen dat planken correct worden gedetecteerd en vastgelegd. Eventuele afwijkingen in de beelden of detectie kunnen worden opgespoord door de logbestanden te analyseren (FMEA, detectie van planken).
+
+2. Behuizing en omgevingsbescherming
+De behuizing van de camera en Raspberry Pi moet regelmatig worden gecontroleerd op vocht en stof. Afdichtingen en filters moeten worden onderhouden en indien nodig vervangen, vooral in vochtige werkomgevingen. Dit voorkomt corrosie en kortsluiting (FMEA, behuizing).
+
+3. Servercapaciteit monitoren
+De serverruimte moet voortdurend worden gemonitord om te voorkomen dat opslagcapaciteit vol raakt. Automatische waarschuwingen kunnen helpen om tijdig in te grijpen en gegevensverlies te voorkomen (FMEA, serveropslag).
+
+4. Netwerkverbinding en communicatie
+Het netwerk moet regelmatig worden getest op stabiliteit. Het implementeren van een retry-methode kan helpen om uploads te voltooien bij tijdelijke storingen (FMEA, netwerkcommunicatie).
+
+5. Ventilatie en koeling van de Raspberry Pi
+Om oververhitting te voorkomen, moet de ventilatie regelmatig worden gecontroleerd. Indien nodig kan een extra ventilator worden toegevoegd om de temperatuur te verlagen (FMEA, systeembeheer).
+
+6.1 Gebruikershandleiding
+Een gebruikershandleiding is opgesteld om operators te ondersteunen bij het gebruik van het systeem. De handleiding bevat:
+
+* Instructies voor het starten en stoppen van het systeem (Functioneel omschrijving, 2024, p. 8, Overzicht van de Serverfunctionaliteiten en Beeldverwerking).
+* Uitleg over het labelen van planken via de webinterface en hoe fouten handmatig kunnen worden gecorrigeerd (FMEA, gebruikersinterface).
+* Procedures voor het rapporteren van problemen en het uitvoeren van basisinspecties.
+6.2 Training en ondersteuning
+Operators hebben een training ontvangen over het correct gebruiken van het systeem. De training omvat:
+* Basiskennis over de werking van de camera en Raspberry Pi.
+* Het gebruik van de webinterface voor het labelen van planken.
+* Identificatie van veelvoorkomende fouten en hoe deze te verhelpen.
+
+
+
+
+6.3 Beheersorganisatie
+Het systeem is overgedragen aan de beheerorganisatie, waarbij alle benodigde documenten, zoals de gebruikershandleiding en het onderhoudsplan, zijn meegeleverd. Voor geavanceerde ondersteuning, zoals software-updates en probleemoplossing, blijft het ontwikkelteam beschikbaar.
+
+6.4 Risico’s en acties
+Op basis van de FMEA zijn de belangrijkste risico’s geïdentificeerd en aangepakt:
+
+* Belichting en beeldkwaliteit: Regelmatige controle van de LED-verlichting en het schoonhouden van de lens voorkomt onscherpe beelden (FMEA, beeldkwaliteit, risicogetal 36).
+
+* Stroomvoorziening: Een UPS (Uninterruptible Power Supply) is aanbevolen om stroomuitval en dataverlies te voorkomen (FMEA, stroomvoorziening, risicogetal 30).
+7 Conclusie en advies
+7.1 Conclusie
+Het project heeft aangetoond dat een geautomatiseerd sorteersysteem voor houten planken technisch haalbaar is met de huidige technologieën. Het ontwikkelde prototype, bestaande uit een Raspberry Pi 5 en een Camera Module 3, heeft een solide basis gelegd voor verdere ontwikkeling. Door de integratie van een afgedekte box met LED-verlichting zijn consistente en hoogwaardige beelden gegenereerd, wat essentieel is voor het trainen van een machine learning-model. Het systeem detecteert planken betrouwbaar en verzamelt data die direct bruikbaar is voor verdere analyse.
+
+Tijdens het project zijn belangrijke stappen gezet in het begrijpen van de technische en functionele eisen voor een volledig geautomatiseerd sorteersysteem. De verzamelde data geeft inzicht in de visuele kenmerken van planken, zoals kleur, noesten en textuur, die essentieel zijn voor kwaliteitsclassificatie. De opstelling toont aan dat het mogelijk is om planken automatisch te fotograferen en op te slaan zonder handmatige tussenkomst, wat een belangrijke stap is richting volledige automatisering.
+
+Het gebruik van convolutional neural networks (CNN’s) is geïdentificeerd als de meest geschikte methode voor beeldherkenning in dit project. Hoewel de huidige hardware voldoende is voor dataverzameling en basisverwerking, is verdere optimalisatie nodig om real-time beeldverwerking en volledige automatisering te realiseren. Bovendien zijn er waardevolle lessen geleerd over het belang van consistente belichting, betrouwbare netwerkcommunicatie en het correct afstellen van detectieparameters.
+
+De conclusie is dat het project niet alleen heeft laten zien dat de technologieën effectief zijn, maar ook dat de huidige opzet schaalbaar en uitbreidbaar is. Het prototype voldoet aan de belangrijkste eisen van dataverzameling en legt een sterke basis voor de ontwikkeling van een volledig geïntegreerd sorteersysteem. De doelen van dit project zijn grotendeels bereikt, en er is een duidelijke roadmap voor verdere verbeteringen en implementatie.
+
+7.2 Advies
+Op basis van de opgedane inzichten en testresultaten wordt het volgende advies gegeven:
+
+Aanbevolen oplossing
+Het huidige prototype is een haalbare en schaalbare oplossing voor dataverzameling en modelontwikkeling. De hardware, bestaande uit een Raspberry Pi 5 en een camera, functioneert betrouwbaar en kan worden uitgebreid met een machine learning-model. Het advies is om deze opzet verder uit te bouwen en te optimaliseren.
+
+Voor- en nadelen
+* Voordelen:
+o De huidige opzet is kostenefficiënt en eenvoudig te implementeren.
+o Het systeem biedt flexibiliteit voor toekomstige uitbreidingen en aanpassingen.
+o De verzamelde data is geschikt voor training van machine learning-modellen.
+* Nadelen:
+o Het systeem is nog niet volledig geautomatiseerd.
+o De huidige hardware heeft beperkte capaciteit voor real-time verwerking.
+
+
+
+
+
+
+
+
+Vervolgtraject
+Om het systeem verder te ontwikkelen, wordt het volgende traject voorgesteld:
+1. Uitbreiding van de dataset: Verzamel en label meer beelden van planken om een robuust machine learning-model te trainen.
+2. Ontwikkeling van een machine learning-model: Train een CNN-model met de verzamelde data en implementeer dit in het systeem.
+3. Optimalisatie van de hardware: Overweeg het gebruik van een krachtigere GPU of server voor snellere en meer nauwkeurige beeldverwerking.
+4. Automatisering van het sorteersysteem: Ontwerp en implementeer een fysieke sorteermachine die samenwerkt met het machine learning-model.
+
+Kostenoverzicht
+* Optimalisatie van hardware: GPU (€500 - €1.000).
+* Ontwikkeling van de sorteermachine: Afhankelijk van specificaties (~€5.000 - €15.000).
+
+Conclusie van het advies
+De huidige opzet is een goede eerste stap richting een geautomatiseerd sorteersysteem. Het vervolgtraject is haalbaar en biedt een duidelijke roadmap voor verdere implementatie. Het advies is om verder te gaan en prioriteit te geven aan het verzamelen van data en het ontwikkelen van een betrouwbaar machine learning-model.
+
+8 Zelfreflectie
+8.1 Leerproces
+Tijdens dit project heb ik veel geleerd over het analyseren en ontwerpen van een technisch systeem. Het realiseren van het prototype heeft me geholpen om mijn vaardigheden in hardware-integratie en softwareontwikkeling verder te ontwikkelen. Door te werken met de Raspberry Pi en de camera, en de configuratie voortdurend te testen en verbeteren, heb ik inzicht gekregen in hoe een systeem functioneel en betrouwbaar kan worden gemaakt.
+
+Een belangrijk leermoment was het belang van documentatie en het uitwerken van een duidelijke functionele omschrijving. Uit de tussenevaluatie blijkt dat mijn mondelinge communicatie sterk wordt beoordeeld, maar dat er ruimte is voor verbetering in het volledig schriftelijk uitwerken van complexe ideeën (Dijkstra, 2024, p. 1). Dit is een aspect dat ik verder wil ontwikkelen.
+
+Mijn onderzoekend vermogen werd als goed beoordeeld, wat mijn inzicht in het projectproces bevestigt (Dijkstra, 2024, p. 1). Echter, het opstellen van een volledig testplan en gedetailleerde technische tekeningen blijft een leerpunt, niet dat dit slecht is, maar dat dit sneller gemaakt moet worden.
+8.2 Kritische en proactieve houding
+Ik heb tijdens het project een kritische en proactieve houding aangenomen, wat ook werd bevestigd in de tussenevaluatie. Mijn begeleider waardeerde mijn vermogen om verantwoordelijkheid te nemen en zelfstandig oplossingen te zoeken voor problemen (Dijkstra, 2024, p. 1). Bijvoorbeeld, bij het verbeteren van de lichtomstandigheden in de box of het aanpassen van detectieparameters, heb ik zelf het initiatief genomen en direct actie ondernomen.
+
+Daarnaast werd mijn professionaliteit en kritische houding in een professionele omgeving als bovenniveau beoordeeld (Dijkstra, 2024, p. 1). Dit motiveert me om deze houding vast te houden en verder te ontwikkelen. Ik zie echter ruimte om mijn kritische houding sterker te vertalen naar schriftelijke rapportages, zodat mijn analyse en oplossingen ook op papier overtuigend zijn.
+
+8.3 Samenwerken, nemen van eigen verantwoordelijkheid en afspraken nakomen
+
+De samenwerking met mijn begeleiders en collega's verliep soepel en professioneel. Ik heb mijn verantwoordelijkheid genomen voor de technische realisatie en ervoor gezorgd dat afspraken altijd werden nagekomen. Uit de tussenevaluatie blijkt dat mijn zelfstandigheid en betrouwbaarheid als sterke punten worden gezien (Dijkstra, 2024, p. 1). Dit gaf mij de ruimte om efficiënt te werken en tegelijkertijd te leren van de input van anderen.
+
+Mijn rol binnen het project was vooral technisch en uitvoerend, waarbij ik ook actief feedback vroeg om mijn werk te verbeteren. Dit heeft niet alleen bijgedragen aan mijn eigen leerproces, maar ook aan het succes van het project.
+
+
+
+
+
+
+8.4 Communiceren met verschillende partijen (intern/extern)
+
+De communicatie binnen het project verliep goed. Ik heb regelmatig updates gegeven over mijn voortgang en feedback gevraagd bij zowel mijn bedrijfsbegeleider als bij collega’s. Dit werd gewaardeerd en heeft ervoor gezorgd dat ik belangrijke inzichten kon meenemen in mijn ontwerp en realisatie.
+
+Mijn mondelinge communicatie werd in de tussenevaluatie als sterk beoordeeld (Dijkstra, 2024, p. 1). Mijn begeleider gaf aan dat ik goed in staat was om complexe ideeën helder uit te leggen en samen te werken met verschillende partijen. Wel is er een aandachtspunt om deze sterke communicatieve vaardigheden ook beter te vertalen naar schriftelijke documentatie (Dijkstra, 2024, p. 1). Hier wil ik in toekomstige projecten extra aandacht aan besteden.
+Bibliografie
+
+[1] Dijkstra, M. (2024, November 12). Tussenevaluatie LE3 bedrijfsbegeleider. Doetinchem: Traject Parket.[2] Luiken, M. (2024). Functionele omschrijving - Mark Luiken. Doetinchem: Traject Parket.[3] Traject Parket. (2024). FMEA Traject Parket Stage. Doetinchem: Traject Parket.
+Stage Project Verslag
+Traject Parket AI Camera – v1.0		
+
+
+3/21© Hogeschool Utrecht, 02-08-2006
+
+
+	2	© Hogeschool Utrecht, (2020)
+
+
+
+Auteur(s)
+Mark Luiken
+
+Datum		
+15 april 2025		
+
+Versie		
+1.0 Revisie.513
+
+© Hogeschool Utrecht, Utrecht, (4 november 2020)
+

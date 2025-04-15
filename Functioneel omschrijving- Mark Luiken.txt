@@ -1,0 +1,836 @@
+
+Functionele omschrijving
+
+Traject Parket AI Camera
+
+
+
+
+Versiebeheer
+VersieDatumOmschrijving1.013-11-2024Eerste definitieve versie.2.006-01-2025Circuit ontwerp toegevoegd.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Inhoudsopgave
+
+1	Inleiding	4
+1.1	Doel van het project	4
+2	Hardware-overzicht	5
+2.1	Raspberry Pi 5 lay-out	5
+2.2	Circuit ontwerp	5
+2.3	Cameraconfiguratie	7
+2.4	Netwerkinstellingen	7
+2.5	Omgevings- en stroomvereisten	8
+3	Softwarearchitectuur	9
+3.1	Overzicht van de Serverfunctionaliteiten en Beeldverwerking	9
+3.2	Belangrijkste softwaremodules	10
+3.3	Remote Service	10
+3.4	Configuratiebestand	11
+3.4.1	Camera-instellingen	11
+3.4.2	ROI-instellingen (Region of Interest)	11
+3.4.3	Bewegingsdetectie-instellingen	11
+3.4.4	Foto-instellingen	11
+3.4.5	Mapinstellingen	12
+3.4.6	Voorgrond- en achtergronddetectie	12
+3.4.7	Achtergrondupdates	12
+3.4.8	Overige instellingen	12
+4	Detectieproces	13
+4.1	Achtergrondinitiatief	13
+4.1.1	Solide Mask: Goede versus Foute Configuratie	13
+4.1.2	Beweging: Solide en Randen Masks	14
+4.1.3	Fine-tuning via Configuratiebestand	15
+4.2	Plankdetectie	17
+4.3	Opslag en verzending	17
+5	Interface	18
+5.1	Gebruikersinterface voor labeling	18
+5.1.1	Sortering	18
+5.1.2	Status	18
+5.2	Feedback naar de gebruiker	19
+6	Referentiemonsters	20
+6.1	Overzicht	20
+6.2	Toepassing	22
+6.3	Belang	22
+7	Risicoanalyse	23
+7.1	Belangrijkste risico's en maatregelen	23
+7.2	Overige risicofactoren	24
+7.3	Samenvatting risicomanagement	24
+
+
+1 Inleiding
+Houtsortering is een essentieel onderdeel van de productieprocessen bij Traject Parket.  Traditioneel wordt dit proces handmatig uitgevoerd, echter, dit document beschrijft de ontwikkeling van een innovatief systeem dat kunstmatige intelligentie (AI) en geavanceerde cameratechnologie combineert om dit te automatiseren.
+
+De kern van het project is de integratie van een Raspberry Pi 5 en een camera in een opstelling die houten planken automatisch detecteert en vastlegt. Eenmaal vastgelegd, worden de beelden verwerkt en opgeslagen voor verdere analyse. Via een gebruiksvriendelijke interface kan de gebruiker planken labelen en de gegevens direct terugkoppelen aan het systeem. Deze data vormt vervolgens de basis voor de training van een machine learning-model dat in de toekomst automatisch kan sorteren.
+
+1.1 Doel van het project
+Het doel van dit project is het ontwikkelen van een prototype voor een geautomatiseerd sorteerproces dat de handmatige houtsortering vervangt. Het systeem moet:
+
+* Bewegende planken detecteren met behulp van cameratechnologie.
+* Foto’s maken en opslaan in een gestandaardiseerd formaat.
+* Een interface bieden waarmee gebruikers planken kunnen labelen en beoordelen.
+* De verzamelde data gebruiken om een machine learning-model te trainen dat in staat is om planken op basis van hun kwaliteit te sorteren.
+
+Dit project zal niet alleen bijdragen aan efficiëntie en nauwkeurigheid, maar ook dienen als een blauwdruk voor verdere automatisering binnen de houtverwerkingsindustrie.
+2 Hardware-overzicht
+2.1 Raspberry Pi 5 lay-out
+
+Figuur 1: Raspberry Pi layout
+
+De Raspberry Pi 5 is de kern van het systeem en bestuurt de camera en communicatie. De aangesloten componenten zijn als volgt:
+
+* Camera:
+o Aangesloten op de CSI-poort.
+
+* LED-verlichting / Raspberry Pi
+o Voeding wordt geleverd via een 24V-stekker
+
+2.2 Circuit ontwerp
+Het circuit is ontworpen om de verschillende componenten in het systeem van stroom te voorzien. De twee belangrijkste componenten zijn de Raspberry Pi en de LED-verlichting in de afgedekte box. Deze vereisen verschillende spanningsniveaus, 5V voor de Raspberry Pi en 24V voor de LED-verlichting. De hoofdvoeding van het systeem is 240V wisselstroom, afkomstig van het standaard stopcontact. Dit wordt via een voedingseenheid omgezet naar de vereiste spanningsniveaus.
+
+
+
+
+
+
+
+
+
+Componenten en werking
+1. Hoofdvoeding (240V) 
+De stroom wordt geleverd vanuit een standaard stopcontact en vormt de primaire voedingsbron voor het systeem. Deze spanning wordt gedistribueerd naar twee afzonderlijke voedingen:
+o Een voedingseenheid voor de Raspberry Pi.
+o Een DIN-rail voedingseenheid voor de LED-verlichting.
+
+2. Voeding voor de Raspberry Pi
+Voor de Raspberry Pi wordt een adapter gebruikt die de 240V wisselstroom omzet naar 5V gelijkstroom. Deze adapter is speciaal ontworpen om de benodigde spanning en stroom voor de Raspberry Pi veilig te leveren.
+
+3. Voeding voor de LED-verlichting
+
+
+        Figuur 2: Siemens DIN Rail Power Supply
+
+De LED-verlichting in de box wordt gevoed via een DIN-rail voedingseenheid (RS-onderdeelnummer: 1365297 ). Deze unit zet de 240V wisselstroom om naar 24V gelijkstroom. De voedingseenheid is direct verbonden met de LED-verlichting in de box en zorgt voor een stabiele stroomtoevoer om flikkeren of variatie in lichtintensiteit te voorkomen.
+
+Circuitdiagram
+
+Het circuit bestaat uit de volgende verbindingen:
+
+* De hoofdvoeding (240V) wordt aangesloten op een verdeelpunt.
+* Vanaf dit verdeelpunt gaat één lijn naar de Raspberry Pi-adapter en een andere lijn naar de DIN-rail voeding.
+* De Raspberry Pi wordt direct gevoed door de 5V uitgang van de adapter.
+* De LED-verlichting wordt gevoed door de 24V uitgang van de DIN-rail voeding.
+
+
+
+
+
+
+
+
+
+
+Veiligheidsmaatregelen
+Om de veiligheid van het systeem te garanderen, zijn de volgende maatregelen toegepast:
+
+* Zekeringen: Er worden zekeringen gebruikt om overbelasting en kortsluiting te voorkomen.
+* Aarding: Alle componenten zijn correct geaard om het risico van elektrische schokken te minimaliseren.
+* Behuizing: De voedingseenheden en bekabeling zijn geïnstalleerd in een gesloten behuizing om blootstelling aan elektriciteit te voorkomen.
+
+Conclusie
+Het circuitontwerp biedt een veilige en efficiënte oplossing om de Raspberry Pi en de LED-verlichting van stroom te voorzien. Door gebruik te maken van afzonderlijke voedingseenheden worden beide systemen optimaal gevoed zonder overbelasting of fluctuaties. Het ontwerp is eenvoudig, betrouwbaar en schaalbaar voor toekomstige uitbreidingen.
+
+
+2.3 Cameraconfiguratie
+Voor de beeldverwerking in dit project wordt gebruikgemaakt van de Raspberry Pi Camera Module 3 in combinatie met een 6mm 3MP-lens. De belangrijkste specificaties zijn:
+
+* Camera: Raspberry Pi Camera Module 3
+o Sensor: 12-megapixel Sony IMX708
+o Resolutie: 12 MP
+o Beeldformaat: 1/2.43"
+o Autofocus: Fasedetectie autofocus (PDAF)
+o HDR-ondersteuning: Ja, tot 3 megapixels
+o Beeldhoek: Standaard 66 graden
+o Interface: CSI-2
+
+* Lens: 6mm 3MP-lens
+o Brandpuntsafstand: 6 mm
+o Maximale diafragma: F1.2
+o Beeldhoek: 63°
+o Lensmontage: CS-mount
+o Minimale objectafstand: 20 cm
+o Afmetingen: Ø30 mm x 34 mm
+o Gewicht: 53 g
+
+Deze configuratie biedt een brede beeldhoek en hoge lichtsterkte, wat essentieel is voor nauwkeurige detectie en beeldverwerking in de huidige opstelling
+
+2.4 Netwerkinstellingen
+De Raspberry Pi 5 maakt gebruik van dynamische of statische IP-adressen, afhankelijk van de netwerkomgeving waarin deze wordt geplaatst. Het IP-adres is essentieel voor de communicatie met de server.
+
+Dynamisch IP-adres:
+Standaard wordt het IP-adres automatisch toegewezen via DHCP. Dit kan worden gecontroleerd met het commando ifconfig of ip a.
+
+
+
+
+Statisch IP-adres (optioneel):
+Voor een stabiele verbinding in productieomgevingen kan een vast IP-adres worden ingesteld:
+o IP-adres: 192.168.182.X (specifiek adres reserveren in netwerk).
+o Subnetmasker: 255.255.255.0
+o Standaard gateway: 192.168.182.1
+o DNS-server: Afhankelijk van de netwerkinstellingen.
+
+Toegang tot de Raspberry Pi
+Om verbinding te maken met de Raspberry Pi via SSH of lokaal, gebruik je de standaard inloggegevens:
+* Gebruikersnaam: pi
+* Wachtwoord: admin
+2.5 Omgevings- en stroomvereisten
+Voeding:
+* Type: 5V/3A gestabiliseerde USB-C-adapter.
+* Vermogen: Ongeveer 15W.
+
+Omgevingseisen:
+* Minimale temperatuur: 0°C.
+* Maximale temperatuur: 50°C.
+* Maximale luchtvochtigheid: ? 80% relatieve luchtvochtigheid bij 40°C (geen condensatie).
+
+Kabelvereisten:
+* Gebruik van kwalitatieve Ethernet- en voedingskabels voor optimale prestaties.
+* Kan ook eventueel op Wifi verbonden worden
+
+3 Softwarearchitectuur
+3.1 Overzicht van de Serverfunctionaliteiten en Beeldverwerking
+De Flask-server vormt de communicatielaag van het systeem, terwijl de beeldverwerkingsmodules verantwoordelijk zijn voor het detecteren en verwerken van beelden. Gezamenlijk zorgen deze componenten voor een gestructureerde workflow en betrouwbare gegevensverwerking.
+
+Functionaliteiten in de workflow:
+1. Beeldverwerking (via onderliggende modules):
+o De Raspberry Pi-camera maakt beelden van planken.
+o Er worden algoritmes toegepast om beweging en randen te detecteren.
+
+2. Flask-server:
+o Opslag en verzending:
+* Beelden worden in batches opgeslagen en als zipbestand verzonden naar een centrale server.
+o Start- en stopfunctionaliteit:
+* Initialiseert achtergrondmodellen en reset de plankenteller.
+* Sluit het systeem af en voltooit alle lopende processen.
+o Interactie met de gebruiker:
+* API-endpoints worden gebruikt om planken te labelen en feedback te verwerken.
+
+Start- en stopprocedure:
+
+* API Endpoint voor Start:
+o Route: /start
+o Functie:
+* Wis alle tijdelijke bestanden en mappen (bijv. achtergrondbeelden en batchmappen).
+* Start plankentelling vanaf 1.
+* Initieer het achtergrondmodel.
+o Response:
+* "Systeem gestart. Achtergrond geïnitialiseerd en plankentelling gereset."
+
+* API Endpoint voor Stop:
+o Route: /stop
+o Functie:
+* Zorgt dat alle actieve batches worden gecomprimeerd en verzonden.
+* Sluit de camera en andere actieve modules netjes af.
+o Response:
+* "Systeem gestopt. Alle processen afgerond."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3.2 Belangrijkste softwaremodules
+De Python-code maakt gebruik van verschillende modules en libraries om de gewenste functionaliteiten te realiseren. Hieronder een overzicht van de belangrijkste modules:
+
+1. cv2 (OpenCV):
+o Verantwoordelijk voor beeldverwerking, zoals het detecteren van beweging en randen.
+o Wordt gebruikt om voorgrondmaskers en horizontale lijnen te detecteren.
+
+2. numpy:
+o Gebruikt voor efficiënte matrix- en array-bewerkingen.
+o Essentieel voor het verwerken van achtergrondmodellen en afbeeldingsgegevens.
+3. os:
+o Beheert bestands- en mapstructuren voor het opslaan van batches en zipbestanden.
+4. time:
+o Voor het bijhouden van tijdgerelateerde functionaliteiten, zoals debounce-timers en afbeeldingsintervallen.
+
+5. shutil:
+o Verantwoordelijk voor het opschonen en herstructureren van mappen (zoals het verwijderen en opnieuw aanmaken van batch-mappen).
+
+6. picamera2:
+o Specifieke module voor de Raspberry Pi-camera.
+o Wordt gebruikt voor het instellen van de resolutie en het vastleggen van frames.
+
+7. config:
+o Een aangepaste module voor het beheren van configuratie-instellingen zoals:
+* Resolutie.
+* Detectiedrempels.
+* Batch- en afbeeldingslimieten.
+
+8. server_communicator:
+o Beheert de communicatie met de centrale server, inclusief het verzenden van zipbestanden.
+
+9. initialize_background en average_background:
+o Modules voor achtergrondverwerking:
+* initialize_background: Initialiseert de achtergrondafbeeldingen.
+* create_average_background: Genereert een gemiddeld achtergrondmodel voor beeldverwerking.
+3.3 Remote Service
+Voor onderhoud en beheer van het systeem is een SSH-verbinding ingesteld. Hiermee kunnen gebruikers en beheerders toegang krijgen tot de Raspberry Pi 5 voor configuratie. Dit vereist dat zowel de beheerder als de Raspberry Pi zich op hetzelfde netwerk bevinden.
+
+* Toegangsmethode:
+o Protocol: SSH (Secure Shell)
+o Poort: Standaard poort 22 (kan worden aangepast voor extra beveiliging)
+o Authenticatie: Sleutelgebaseerde authenticatie of wachtwoord (aanpasbaar naar wens)
+* Netwerkeisen:
+o De Raspberry Pi en de beheercomputer moeten verbonden zijn met hetzelfde lokale netwerk (LAN).
+o Het IP-adres van de Raspberry Pi moet bekend zijn (huidig IP: 192.168.182.4).
+* Functies:
+o Diagnose: Controle van logbestanden en actieve processen.
+o Configuratie: Wijzigingen aanbrengen in software-instellingen.
+* Beveiliging:
+o Alleen toegang vanaf geautoriseerde apparaten.
+o Extra beveiliging via een VPN-verbinding mogelijk indien externe toegang nodig is in de toekomst.
+3.4 Configuratiebestand
+Het configuratiebestand config.py bevat alle belangrijke instellingen die het gedrag van het systeem bepalen. Deze configuratie maakt het systeem flexibel en eenvoudig aanpasbaar zonder dat de hoofdcode hoeft te worden aangepast. Hieronder worden de eigenschappen en hun functies beschreven.
+
+3.4.1 Camera-instellingen
+
+FRAME_WIDTH en FRAME_HEIGHT:
+- Bepaalt de resolutie van de vastgelegde frames.
+- Functie: Optimaliseert prestaties en opslag door een lagere resolutie te kiezen als de volledige kwaliteit niet nodig is.
+
+3.4.2 ROI-instellingen (Region of Interest)
+
+X_START, X_END, Y_START, Y_END:
+- Definieert het gebied binnen het frame dat wordt geanalyseerd.
+- Functie: Vermindert ruis door buiten het gedefinieerde gebied geen bewegingen te detecteren.
+
+3.4.3 Bewegingsdetectie-instellingen
+
+MOVEMENT_THRESHOLD:
+- Minimale pixelgrootte van een contour om als beweging te worden beschouwd.
+- Functie: Negeert kleine verstoringen zoals stof of schaduwen.
+
+MIN_CONTOUR_AREA:
+- Verwijdert ruis door alleen grotere contouren te analyseren.
+- Functie: Zorgt dat alleen objecten van een relevante grootte worden gedetecteerd.
+
+DETECTION_THRESHOLD:
+- Aantal opeenvolgende frames waarin beweging moet worden gedetecteerd voordat het systeem actie onderneemt.
+- Functie: Vermindert vals-positieve detecties door kortstondige veranderingen te negeren.
+
+NO_DETECTION_THRESHOLD:
+- Aantal opeenvolgende frames zonder beweging voordat het systeem stopt met opnemen.
+- Functie: Zorgt voor efficiëntere verwerking door stilstand correct te herkennen.
+
+3.4.4 Foto-instellingen
+PHOTO_LIMIT:
+- Maximum aantal foto's per plank.
+- Functie: Beperkt opslaggebruik en zorgt dat batches consistent blijven.
+
+PHOTO_INTERVAL:
+- Tijd (in seconden) tussen het maken van foto's.
+- Functie: Zorgt voor een evenwicht tussen voldoende gegevens en opslagbeheer.
+
+3.4.5 Mapinstellingen
+
+BACKGROUND_IMAGE_DIR:
+- Locatie waar achtergrondafbeeldingen worden opgeslagen.
+- Functie: Houdt de initiële achtergrondmodellen georganiseerd.
+
+AVERAGE_BACKGROUND_FILE:
+- Bestandsnaam van de gemiddelde achtergrondafbeelding.
+- Functie: Gebruikt voor vergelijking met nieuwe frames om beweging te detecteren.
+3.4.6 Voorgrond- en achtergronddetectie
+THRESHOLD:
+- Waarde voor binair maskeren.
+- Functie: Scheidt voorgrond van achtergrond door een drempel in grijswaarden toe te passen.
+
+EDGE_THRESHOLD:
+- Drempelwaarde voor randdetectie.
+- Functie: Helpt bij het identificeren van duidelijke contouren in een object.
+
+CANNY_LOW_THRESHOLD en CANNY_HIGH_THRESHOLD:
+- Drempels voor de Canny Edge Detection.
+- Functie: Detecteert randen in een afbeelding en scheidt objecten van achtergrond.
+3.4.7 Achtergrondupdates
+BACKGROUND_UPDATE_SPEED:
+- Snelheid waarmee de achtergrond wordt geüpdatet.
+- Functie: Houdt de achtergrond dynamisch, wat handig is voor veranderende lichtomstandigheden.
+3.4.8 Overige instellingen
+ENABLE_PHOTO_LIMIT:
+- Schakelt de limiet voor het aantal foto's in of uit.
+- Functie: Maakt onbeperkte fotografie mogelijk als dit vereist is.
+
+UPPER_BOUNDARY_LINE:
+- Hoogte (in pixels) van de grenslijn in het frame.
+- Functie: Helpt bij het bepalen wanneer een nieuwe plank is gedetecteerd.
+
+4 Detectieproces
+4.1 Achtergrondinitiatief
+Om de betrouwbaarheid van het bewegingsdetectieproces te garanderen, moeten de solide en randen masks correct worden geconfigureerd. Het belangrijkste criterium hierbij is dat de masks volledig zwart zijn wanneer er geen beweging of objecten in beeld zijn. Dit geeft aan dat de achtergrond correct is geïnitialiseerd en dat er geen onbedoelde beweging wordt gedetecteerd.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4.1.1 Solide Mask: Goede versus Foute Configuratie
+* Goede Configuratie:
+o In de correcte configuratie is het solide mask volledig zwart.
+o Dit betekent dat er geen beweging of objecten in beeld worden gedetecteerd, wat aangeeft dat de achtergrond correct is geïnitialiseerd.
+o Voorbeeld: Het linkerbeeld met een groen vinkje (figuur 1) toont een correcte configuratie.
+
+* Foute Configuratie:
+o In de onjuiste configuratie is er een klein beetje wit zichtbaar in het solide mask, wat duidt op onbedoelde detectie van beweging of ruis.
+o Dit kan worden veroorzaakt door achtergrondruis, verkeerde kalibratie of veranderingen in lichtomstandigheden.
+o Voorbeeld: Het rechterbeeld met een rood kruisje (figuur 2) illustreert een incorrect solide mask.
+
+Belang: Het solide mask moet volledig zwart zijn bij afwezigheid van beweging om vals-positieve detecties te voorkomen en een correcte achtergrondinitialisatie te garanderen.
+
+
+
+
+
+
+
+
+4.1.2 Beweging: Solide en Randen Masks
+
+
+Wanneer een plank in beeld komt, veranderen de masks:
+
+* Randen Mask (Figuur 3):
+o Het randen mask toont de contouren van de plank en andere opvallende details, zoals noesten of randafwerkingen.
+o Zie [Randen_mask_beweging.png] voor een voorbeeld van een randen mask tijdens beweging.
+
+* Solide Mask (Figuur 4):
+o Het solide mask wordt wit in de gebieden waar de plank zich bevindt, wat het volledige silhouet van de plank toont.
+o Zie [Solid_mask_beweging.png] voor een voorbeeld van een solide mask tijdens beweging.
+
+Belang van zwarte masks zonder beweging
+De masks spelen een cruciale rol in de betrouwbaarheid van het detectiesysteem:
+
+1. Voorkoming van vals-positieve detecties:
+o Zwarte masks zonder beweging minimaliseren ruis en zorgen ervoor dat het systeem niet reageert op kleine veranderingen, zoals lichtvariaties of achtergrondruis.
+2. Correcte initialisatie:
+o Door de masks zwart te houden zonder beweging, kan het systeem consistent starten met een schone achtergrond en nauwkeurig reageren op nieuwe objecten.
+3. Kalibratiecontrole:
+o Als een van de masks niet volledig zwart is tijdens de configuratie zonder beweging, duidt dit op een probleem met de achtergrondinitialisatie of lichtinterferentie.
+o Zie [Solid_mask_zwart_fout.png] en [Randen_mask_zwart_fout.png] voor voorbeelden van onjuiste masks zonder beweging.
+
+
+
+
+
+
+
+
+4.1.3 Fine-tuning via Configuratiebestand
+Het gedrag van de solide en randen masks kan worden aangepast door specifieke parameters in het configuratiebestand (config.py) te wijzigen. Hieronder wordt uitgelegd welke instellingen je kunt aanpassen om meer solidheid in het solide mask te krijgen, of om meer of minder randen te detecteren in het randen mask.
+
+Fine-tunen van het Solide Mask
+
+Het solide mask wordt bepaald door de vergelijking tussen de huidige frame en het achtergrondmodel. Om de solidheid van het solide mask aan te passen, gebruik je de volgende variabelen:
+
+1. THRESHOLD:
+o Omschrijving: Bepaalt de gevoeligheid van de vergelijking tussen de huidige frame en het achtergrondmodel. Hoe lager de waarde, hoe sneller een pixel als beweging wordt beschouwd.
+o Aanpassing:
+* Verlagen: Detecteert meer details en maakt het solide mask gevoeliger.
+* Verhogen: Negeert kleinere veranderingen, waardoor het solide mask minder gevoelig is en meer solide blijft.
+o Aanbevolen startwaarde: 30.
+
+2. MOVEMENT_THRESHOLD:
+o Omschrijving: Bepaalt de minimale omvang van de beweging die als voorgrond wordt beschouwd.
+o Aanpassing:
+* Verlagen: Detecteert kleinere objecten of bewegingen.
+* Verhogen: Zorgt dat alleen grotere bewegingen worden gedetecteerd.
+o Aanbevolen startwaarde: 5000.
+
+3. BACKGROUND_UPDATE_SPEED:
+o Omschrijving: Bepaalt hoe snel het achtergrondmodel wordt bijgewerkt.
+o Aanpassing:
+* Verlagen: Houdt het achtergrondmodel stabieler, waardoor het solide mask consistenter blijft.
+* Verhogen: Zorgt dat het achtergrondmodel sneller verandert, wat handig kan zijn bij wisselende lichtomstandigheden.
+o Aanbevolen startwaarde: 0.02.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fine-tunen van het Randen Mask
+
+
+
+Het randen mask wordt beïnvloed door de randen die worden gedetecteerd in het frame. De volgende variabelen kunnen worden aangepast om meer of minder randen te tonen:
+
+1. CANNY_LOW_THRESHOLD en CANNY_HIGH_THRESHOLD:
+o Omschrijving: Drempelwaarden voor Canny Edge Detection.
+o Aanpassing:
+* Verlagen van de lage drempel: Detecteert meer zwakke randen, wat leidt tot meer details in het randen mask.
+* Verhogen van de hoge drempel: Detecteert alleen sterke randen, waardoor het randen mask strakker wordt en minder details toont.
+o Aanbevolen startwaarden: 20 (laag) en 80 (hoog).
+
+2. EDGE_THRESHOLD:
+o Omschrijving: Extra filter voor het versterken van randen.
+o Aanpassing:
+* Verlagen: Versterkt meer zwakke randen, wat meer details oplevert.
+* Verhogen: Onderdrukt zwakke randen, waardoor het mask strakker wordt.
+o Aanbevolen startwaarde: 20.
+
+Praktisch voorbeeld
+
+Zoals te zien is in de afbeeldingen 5 en 6, is er een duidelijk contrast te zien van randen in de plank. In afbeelding 6 is de overgang van de plank te zien maar wellicht niet voldoende genoeg voor het algoritme. Hierdoor kunnen er fouten ontstaan en wordt de overgang niet duidelijk. 
+
+Stel je wilt het solide mask gevoeliger maken voor kleinere bewegingen om deze overgang duidelijker te maken kan je het volgende proberen:
+* Aanpassing: Verlaag de waarde van THRESHOLD (bijvoorbeeld van 30 naar 20).
+* Effect: Het mask detecteert sneller kleine veranderingen, wat nuttig kan zijn voor het opsporen van fijnere bewegingen.
+
+
+Stel je wilt minder ruis in het randen mask:
+* Aanpassing: Verhoog de waarde van CANNY_LOW_THRESHOLD (bijvoorbeeld van 20 naar 40).
+* Effect: Alleen sterkere randen worden weergegeven, wat resulteert in een schoner randen mask.
+
+4.2 Plankdetectie
+Het systeem detecteert planken op basis van horizontale lijnen en een vastgestelde grenslijn.
+
+* Horizontale lijnen detecteren:
+o Randen in het beeld worden gedetecteerd met behulp van Canny Edge Detection.
+o Horizontale lijnen worden geïdentificeerd met de Hough Line Transformation.
+o Een lijn wordt als horizontaal beschouwd als de hoek ten opzichte van de X-as minder dan 10 graden bedraagt.
+* Detectiegrenzen:
+o Een horizontale lijn boven de UPPER_BOUNDARY_LINE wordt geïnterpreteerd als een nieuwe plank.
+o Dit voorkomt dat herhalende bewegingen of ruis onterecht worden gezien als een plank.
+* Debounce-logica:
+o Om vals-positieve detecties te minimaliseren, wordt een debounce-timer van LINE_DEBOUNCE_TIME (3 seconden) toegepast.
+o Pas na deze tijd wordt een nieuwe detectie geaccepteerd.
+* Start van een nieuwe plank:
+o Bij detectie van een nieuwe plank:
+* Wordt een nieuwe batchmap aangemaakt, bijvoorbeeld plank_1.
+* Wordt gestart met het vastleggen van foto's voor deze plank.
+4.3 Opslag en verzending
+Na detectie en beeldverwerking worden de gegevens georganiseerd en verzonden naar de server.
+* Structuur van zipbestanden:
+o Elk planknummer heeft een aparte map, zoals plank_1.
+o Binnen deze map worden maximaal PHOTO_LIMIT afbeeldingen opgeslagen.
+o Als de plank volledig is vastgelegd, wordt de map gecomprimeerd tot een zipbestand (plank_1.zip).
+* Communicatie met de server:
+o Het zipbestand wordt verzonden naar een centrale server via de module server_communicator.
+o De server verwerkt deze bestanden verder en maakt ze beschikbaar voor de gebruikerinterface.
+* Beëindigen van opslag:
+o Wanneer een plank voltooid is of als er geen detectie meer is, stopt het systeem met opnemen en bereidt het zich voor op een nieuwe detectie.
+5 Interface
+5.1 Gebruikersinterface voor labeling
+De gebruikersinterface stelt de gebruiker in staat om planken handmatig te labelen op basis van hun eigenschappen en status. Dit proces speelt een belangrijke rol in het verzamelen van trainingsdata voor het machine learning-model.
+
+* Labelingproces:
+1. Een plank wordt weergegeven in de interface.
+2. De gebruiker kiest een sortering en status voor de plank uit de beschikbare opties.
+3. De geselecteerde labels worden opgeslagen en gekoppeld aan de plank.
+5.1.1 Sortering
+
+
+Sorteeropties (Hierover in hoofdstuk 6 meer): De plank kan worden gesorteerd op basis van visuele en structurele eigenschappen. Mogelijke sorteringen zijn:
+- Premier
+- Natuur
+- Rustiek 
+- Rustiek Extra
+- Rustiek 1-bis
+- Bruut
+- Bruut Extra
+- QFQ (Quarter-sawn Fine Quality)
+
+Het getal in de knop van de sortering geeft aan hoeveel planken door de gebruiker aan deze specifieke sortering zijn toegewezen.
+5.1.2 Status
+
+
+* Status van de plank: Naast de sortering kan de gebruiker aangeven wat de algemene staat van de plank is. De statusopties zijn:
+o Goed gekeurd: De plank voldoet aan de eisen.
+o Te krom: De plank is structureel ongeschikt door kromming.
+o Afgekeurd: De plank is ongeschikt voor verder gebruik.
+
+5.2 Feedback naar de gebruiker
+
+De interface biedt real-time feedback over de status van het proces en de laatst verwerkte plank. Dit helpt gebruikers om direct inzicht te krijgen in de voortgang en eventuele acties die nodig zijn. Onderstaand wordt de informatie uit de interface verduidelijkt aan de hand van de afbeelding.
+
+Visuele feedback: Laatste Recente Plank
+
+De sectie "Laatste Recente Plank" toont informatie over de meest recent gedetecteerde plank.
+- Afbeelding van plank:
+o Hier wordt een voorbeeldweergave van de plank weergegeven zodra deze is gedetecteerd.
+o In dit geval is er nog geen afbeelding beschikbaar, wat betekent dat er nog geen plank is verwerkt.
+- Status:
+o Geeft de huidige status van de plank weer, bijvoorbeeld:
+* Nog niet toegewezen: De plank is gedetecteerd, maar er is nog geen label toegekend.
+* Goed gekeurd, Te krom, of Afgekeurd: De plankstatus na beoordeling door de gebruiker.
+- Sortering:
+o Toont de toegewezen sortering aan de plank, zoals Premier, Rustiek, of Bruut.
+o In dit voorbeeld is nog geen sortering toegewezen.
+
+Onbewerkte planken
+
+De rechterzijde van de interface toont een lijst van planken die nog niet zijn gelabeld.
+- Deze lijst helpt de gebruiker om te zien welke planken nog beoordeeld moeten worden.
+- Dit biedt overzicht en voorkomt dat planken onbedoeld worden overgeslagen.
+
+
+Statusmeldingen
+
+- Upload geslaagd:
+o Zodra een plank is gelabeld, bevestigt de interface visueel dat de gegevens succesvol zijn opgeslagen.
+
+- Foutmeldingen:
+o Bij problemen, zoals verbindingsfouten met de server of ontbrekende data, wordt een duidelijke foutmelding weergegeven
+
+- Processtatus:
+o De interface geeft aan of het systeem actief is, wacht op nieuwe detectie, of is gestopt.
+
+
+
+
+6 Referentiemonsters
+Referentiemonsters worden gebruikt om de verschillende kwaliteiten en eigenschappen van hout te beoordelen. Deze monsters bieden een duidelijke standaard voor de sorteringen die in dit project worden gebruikt. Hieronder staan de belangrijkste sorteringen, gebaseerd op de normen uit het referentiedocument.
+6.1 Overzicht
+Natuur:
+
+
+* Maximaal toegestane noestgrootte: 3 tot 5 mm.
+* Lichte kleurverschillen inherent aan de houtstructuur zijn toegestaan.
+* Geschikt voor klanten die een subtiel en natuurlijk uiterlijk prefereren.
+
+Premier:
+
+
+* Geen noesten, maar kleine pitjes zijn toegestaan.
+* Lichte kleurverschillen inherent aan de houtstructuur zijn toegestaan.
+* Ideaal voor een strakke, verfijnde uitstraling.
+
+Rustiek Extra:
+
+
+* Toegestane noesten: tot ca. 30 mm.
+* Kleurverschillen zijn toegestaan, wat zorgt voor een robuuster uiterlijk.
+* Gewenst voor toepassingen waarbij karakter belangrijk is.
+
+
+
+
+
+
+
+Rustiek 1-bis:
+
+
+* Gezonde, gesloten noestjes tot ca. 10 mm toegestaan.
+* Lichte kleurverschillen zijn geaccepteerd.
+* Balans tussen een natuurlijke en robuuste uitstraling.
+
+Bruut Extra:
+
+
+* Noesten tot ca. 70 mm en kleurverschillen zonder beperking.
+* Gesloten harten zijn toegestaan.
+* Ideaal voor een authentiek en uitgesproken karakter.
+
+Bruut:
+
+
+* Noesten tot ca. 60 mm, inclusief windbarstjes.
+* Kleurverschillen zonder beperking.
+* Geeft een rustieke en ruige uitstraling.
+
+QFQ (Quarter-sawn Fine Quality):
+
+
+* Geen noesten, maar karakteristieke, glanzende spiegels en rechtdradige structuren.
+* Lichte kleurverschillen inherent aan de houtstructuur.
+* Geschikt voor hoogwaardige toepassingen waar uniformiteit belangrijk is.
+6.2 Toepassing
+
+De referentiemonsters worden gebruikt als standaard om planken te labelen en te sorteren. Deze standaarden zorgen ervoor dat:
+
+* Gebruikers planken kunnen categoriseren volgens vastgestelde normen.
+* Consistentie in kwaliteitsbeoordeling wordt gewaarborgd.
+* Data voor machine learning wordt verzameld met de juiste sorteringen.
+6.3 Belang
+Referentiemonsters vormen een essentieel onderdeel van het proces:
+
+* Voor training van het model: Correct gelabelde data helpt bij het ontwikkelen van een nauwkeurig machine learning-model.
+
+* Voor kwaliteitsborging: Ze zorgen dat alle planken voldoen aan de klantverwachtingen.
+
+
+* Voor gebruikersgemak: Duidelijke richtlijnen helpen gebruikers bij een snelle en correcte beoordeling.
+7 Risicoanalyse
+In dit hoofdstuk worden de belangrijkste risico’s binnen het systeem besproken op basis van de Failure Mode and Effect Analysis (FMEA). Hierbij wordt vooral aandacht besteed aan risico’s met een hoog risicogetal (RPN), omdat deze het meest kritisch zijn voor de werking van het systeem. Voor elk risico worden ook de voorgestelde maatregelen besproken.
+
+7.1 Belangrijkste risico's en maatregelen
+Detectie van nieuwe planken
+- Probleem: De camera herkent niet correct dat er een nieuwe plank begint, wat resulteert in gecombineerde foto’s van meerdere planken.
+- Oorzaak: Onjuiste interpretatie van de horizontale streep door de software.
+- Effect: De dataset raakt vervuild, wat leidt tot onjuiste trainingsdata voor het machine learning-model.
+- Maatregel:
+o Verbetering van de logica voor het detecteren van horizontale lijnen, bijvoorbeeld door aanpassing van de THRESHOLD- en CANNY_LOW_THRESHOLD-waarden in het configuratiebestand.
+o Testen en kalibreren van de detectiegrens met planken van verschillende afmetingen.
+
+Systeembeheer van de Raspberry Pi
+- Probleem: De Raspberry Pi kan oververhit raken, waardoor het systeem onverwachts uitvalt en de dataverzameling stopt.
+- Oorzaak: Onvoldoende ventilatie of koeling binnen de behuizing.
+- Effect: Verlies van gegevens en onderbreking van het detectieproces.
+- Maatregel:
+o Verbetering van de koeling door het toevoegen van een ventilator of een koellichaam.
+o Implementatie van temperatuurmonitoring en waarschuwingen bij oververhitting.
+
+Opslaan en uploaden van foto’s
+- Probleem: Foto’s worden niet correct geüpload naar de server als gevolg van een netwerkfout of onvoldoende opslagcapaciteit.
+- Oorzaak: Onstabiele verbinding of gebrek aan monitoring van servercapaciteit.
+- Effect: Incomplete datasets en verstoring van de analyse.
+- Maatregel:
+o Implementeren van een retry-methode om uploadpogingen automatisch opnieuw uit te voeren bij netwerkfouten.
+o Toevoegen van monitoring voor serveropslag en waarschuwingen bij lage capaciteit.
+
+Beeldkwaliteit van de camera
+- Probleem: Onscherpe beelden maken de foto's onbruikbaar voor de analyse en sortering van planken.
+- Oorzaak: Slechte focus of een vervuilde lens.
+- Effect: Foutieve sortering en onbetrouwbare labels.
+- Maatregel:
+o Regelmatige visuele inspectie en reiniging van de lens.
+o Periodieke controle van de focusinstellingen en indien nodig herkalibreren.
+
+Achtergrondmasker beïnvloed door externe omstandigheden
+* Risicogetal (RPN): 360
+* Probleem: Het achtergrondmasker wordt verstoord door externe invloeden, zoals veranderingen in de fysieke omgeving of aanrakingen door medewerkers.
+* Oorzaak:
+o Onbedoelde fysieke interactie met de omhuizing (bijv. aanraken van doeken of het verplaatsen van onderdelen).
+o Wijzigingen in de opstelling of fysieke parameters van het systeem.
+
+* Effect:
+o Het systeem detecteert onbedoelde veranderingen in de achtergrond en slaat onnodige (loze) foto's op.
+o Dit leidt tot vervuilde data en verstoring van het detectieproces.
+
+Maatregelen:
+Mechanische verbetering: Zorg ervoor dat de omhuizing stevig en solide is, zodat beweging van doeken of componenten niet mogelijk is.
+
+Controlemechanisme: Implementeer een controle die verifieert of het solide mask nog volledig zwart is. Indien afwijkingen worden gedetecteerd, wordt het achtergrondmodel automatisch opnieuw geconfigureerd.
+
+7.2 Overige risicofactoren
+Naast de bovengenoemde kritieke risico's zijn er enkele minder ernstige, maar nog steeds belangrijke aandachtspunten:
+* Stroomvoorziening: Gebruik van een UPS (Uninterruptible Power Supply) om stroomuitval of spanningspieken te voorkomen.
+* Behuizing van de hardware: Gebruik van waterdichte en stofvrije behuizingen om corrosie en kortsluiting door vocht te vermijden.
+7.3 Samenvatting risicomanagement
+De belangrijkste risico's hebben betrekking op:
+1. De detectie van nieuwe planken.
+2. De betrouwbaarheid en temperatuurregeling van de Raspberry Pi.
+3. De opslag en upload van foto’s.
+4. De beeldkwaliteit van de camera.
+Door de bovengenoemde maatregelen te implementeren, zoals het verbeteren van de detectielogica, toevoegen van koeling, en gebruik van servermonitoring, kan de stabiliteit en betrouwbaarheid van het systeem aanzienlijk worden verhoogd.
+Functionele omschrijving
+Traject Parket AI Camera – v2.0		
+
+
+3/21© Hogeschool Utrecht, 02-08-2006
+
+
+	2	© Hogeschool Utrecht, (2020)
+
+
+
+Auteur(s)
+Mark Luiken
+
+Datum		
+15 april 2025		
+
+Versie		
+2.0 Revisie.107
+
+© Hogeschool Utrecht, Utrecht, (4 november 2020)
+
